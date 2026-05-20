@@ -73,3 +73,46 @@ for (let row = 0; row < 8; row++) {
   }
 }
 console.log("Chessboard preview created with 64 squares.");
+
+/* 
+const colors = ["red", "green", "blue"];
+
+console.log(colors[0]);
+console.log(colors[1]);
+console.log(colors.length); 
+
+for (let i = 0; i < colors.length; i++) {
+    console.log(colors[i]);
+}
+*/ 
+//an exapmle of how to use arryas when creating my chess pieces
+
+
+const blackPieces = ["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"];
+const whitePieces = ["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"];
+
+/*
+for (let i = 0; i < blackPieces.length; i++) {
+    console.log("Black Piece " + (i + 1) + ": ", blackPieces[i]);
+}
+
+for (let i = 0; i < whitePieces.length; i++) {
+    console.log("White Piece " + (i + 1) + ": ", whitePieces[i]);
+}
+*/
+//standard way of looping or printing every tiem in the arry, with the index num
+
+/* for (const piece of blackPieces) {
+    console.log("Black Piece: ", (blackPieces.indexOf(piece) + 1) + ": ", piece);
+}*/ //bc of the incorrect numbering of pieces, i'm forced to use the standard method of looping
+
+for (let i = 0; i < blackPieces.length; i++) {
+    console.log("Black Piece " + (i + 1) + ": ", blackPieces[i]);
+}
+
+for (let i = 0; i < whitePieces.length; i++) {
+    console.log("White Piece " + (i + 1) + ": ", whitePieces[i]);
+}
+
+console.log("Total Black Pieces: ", blackPieces.length);
+console.log("Total White Pieces: ", whitePieces.length);
