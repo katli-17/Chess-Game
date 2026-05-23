@@ -52,6 +52,7 @@ board.appendChild(sq4);
 console.log("Chessboard preview created with 4 squares."); */
 // this is an example of how to create the board & mulitple them according to color
 
+/*
 function createSquare(row, col) {
   const isLight = (row + col) % 2 === 0;
   const square = document.createElement("div");
@@ -62,17 +63,20 @@ function createSquare(row, col) {
   return square;
 }
 
-const board = document.createElement("div");
-document.body.appendChild(board);
-board.style.width = "288px";
+const boardEl = document.createElement("div");
+document.body.appendChild(boardEl);
+boardEl.style.width = "288px";
 
 for (let row = 0; row < 8; row++) {
   for (let col = 0; col < 8; col++) {
     const sq = createSquare(row, col);
-    board.appendChild(sq);
+    boardEl.appendChild(sq);
   }
 }
 console.log("Chessboard preview created with 64 squares.");
+*/
+//this is how i created the chessbaord on my own
+//reason i later made this section into a comment is bc when i ran my program, it created two chess baords- this empty one, & the one i later made with the pieces displayed on it
 
 /* 
 const colors = ["red", "green", "blue"];
@@ -84,12 +88,12 @@ console.log(colors.length);
 for (let i = 0; i < colors.length; i++) {
     console.log(colors[i]);
 }
-*/ 
+*/
 //an exapmle of how to use arryas when creating my chess pieces
 
-
-const blackPieces = ["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"];
-const whitePieces = ["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"];
+// Use arrays of piece symbols for display/order
+const blackPieces = ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"];
+const whitePieces = ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"];
 
 /*
 for (let i = 0; i < blackPieces.length; i++) {
@@ -104,15 +108,107 @@ for (let i = 0; i < whitePieces.length; i++) {
 
 /* for (const piece of blackPieces) {
     console.log("Black Piece: ", (blackPieces.indexOf(piece) + 1) + ": ", piece);
-}*/ //bc of the incorrect numbering of pieces, i'm forced to use the standard method of looping
+}*/ //bc of the incorrect numbering of pieces, i'm forced to use the standard methodof looping
 
 for (let i = 0; i < blackPieces.length; i++) {
-    console.log("Black Piece " + (i + 1) + ": ", blackPieces[i]);
+  console.log("Black Piece " + (i + 1) + ": ", blackPieces[i]);
 }
 
 for (let i = 0; i < whitePieces.length; i++) {
-    console.log("White Piece " + (i + 1) + ": ", whitePieces[i]);
+  console.log("White Piece " + (i + 1) + ": ", whitePieces[i]);
 }
 
 console.log("Total Black Pieces: ", blackPieces.length);
 console.log("Total White Pieces: ", whitePieces.length);
+
+const board = [
+  [
+    "bRook",
+    "bKnight",
+    "bBishop",
+    "bQueen",
+    "bKing",
+    "bBishop",
+    "bKnight",
+    "bRook",
+  ],
+  ["bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn"],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn"],
+  [
+    "wRook",
+    "wKnight",
+    "wBishop",
+    "wQueen",
+    "wKing",
+    "wBishop",
+    "wKnight",
+    "wRook",
+  ],
+];
+
+console.log("Top-left:", board[0][0]);
+console.log("Top-right:", board[0][7]);
+console.log("Bottom-left:", board[7][0]);
+console.log("Bottom-right:", board[7][7]);
+
+for (let row = 0; row < 8; row++) {
+  for (let col = 0; col < 8; col++) {
+    const piece = board[row][col];
+    if (piece) {
+      console.log("Found", piece, "at position (", row, ",", col, ")");
+    }
+  }
+}
+
+function createSquare(row, col, piece) {
+  const isLight = (row + col) % 2 === 0;
+  const sq = document.createElement("div");
+
+  sq.style.width = "36px";
+  sq.style.height = "36px";
+  sq.style.backgroundColor = isLight ? "#c2b17d" : "#7c3333";
+  sq.style.display = "inline-flex";
+  sq.style.justifyContent = "center";
+  sq.style.alignItems = "center";
+  sq.style.fontSize = "22px";
+
+  // Map piece codes to symbols
+  const symbolMap = {
+    bRook: "♜",
+    bKnight: "♞",
+    bBishop: "♝",
+    bQueen: "♛",
+    bKing: "♚",
+    bPawn: "♟",
+    wRook: "♖",
+    wKnight: "♘",
+    wBishop: "♗",
+    wQueen: "♕",
+    wKing: "♔",
+    wPawn: "♙",
+  };
+
+  if (piece && symbolMap[piece]) {
+    sq.textContent = symbolMap[piece];
+  }
+
+  return sq;
+}
+
+const container = document.createElement("div");
+container.style.width = "288px";
+document.body.appendChild(container);
+
+for (let row = 0; row < 8; row++) {
+  for (let col = 0; col < 8; col++) {
+    const piece = board[row][col];
+    const sq = createSquare(row, col, piece);
+    container.appendChild(sq);
+  }
+}
+
+console.log("Our board now has pieces on it!");
