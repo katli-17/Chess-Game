@@ -121,9 +121,11 @@ for (let i = 0; i < whitePieces.length; i++) {
 console.log("Total Black Pieces: ", blackPieces.length);
 console.log("Total White Pieces: ", whitePieces.length);
 
-const board = [
-  [
-    "bRook",
+const game = {
+  selected: null,
+  turn: "white",
+blackPieces: [
+    ["bRook",
     "bKnight",
     "bBishop",
     "bQueen",
@@ -131,33 +133,74 @@ const board = [
     "bBishop",
     "bKnight",
     "bRook",
-  ],
-  ["bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn"],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn"],
-  [
-    "wRook",
+  ]],
+whitePieces: [
+    ["wRook",
     "wKnight",
     "wBishop",
     "wQueen",
     "wKing",
     "wBishop",
     "wKnight",
-    "wRook",
-  ],
-];
+    "wRook",  
+  ]],
+board: [
+  ["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"],
+  ["bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn", "bPawn"],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn", "wPawn"],
+  ["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"]
+]
+};
 
-console.log("Top-left:", board[0][0]);
-console.log("Top-right:", board[0][7]);
-console.log("Bottom-left:", board[7][0]);
-console.log("Bottom-right:", board[7][7]);
+function handleClick(row, col) {
+  const piece = game.board[row][col];
+  const  myColor = game.turn === "white" ? "w" : "b";
+
+  if (!game.selected) {
+    if (piece && piece[0] === myColor) {
+      game.selected = { row, col };
+      console.log("Selected piece at (", row, ",", col, "): ", piece);
+    }
+    drawBoard();
+  }
+  const from = game.selected;
+  if (from.row === row && from.col === col) {
+    game.selected = null;
+    drawBoard();
+  }
+
+  piece 
+  const moving = game.board[from.row][from.col];
+  const target = game.board[row][col];
+
+  if (target && target[0] === myColor) {
+    game.selected = { row, col };
+    drawBoard(); return;
+  }
+
+  game.board[row][col] = moving;
+  game.board[from.row][from.col] = "";
+  game.selected = null;
+  game.turn = game.turn === "white" ? "black" : "white";
+
+  if (target) console.log("Captured", target, "at (", row, ",", col, ")");
+  else console.log("Moved", moving, "to (", row, ",", col, ")");
+  console.log("Turn: ", game.turn);
+  drawBoard();
+  }
+
+console.log("Top-left:", game.board[0][0]);
+console.log("Top-right:", game.board[0][7]);
+console.log("Bottom-left:", game.board[7][0]);
+console.log("Bottom-right:", game.board[7][7]);
 
 for (let row = 0; row < 8; row++) {
   for (let col = 0; col < 8; col++) {
-    const piece = board[row][col];
+    const piece = game.board[row][col];
     if (piece) {
       console.log("Found", piece, "at position (", row, ",", col, ")");
     }
@@ -167,14 +210,18 @@ for (let row = 0; row < 8; row++) {
 function createSquare(row, col, piece) {
   const isLight = (row + col) % 2 === 0;
   const sq = document.createElement("div");
+  const isSelected = game.selected && game.selected.row === row && game.selected.col === col;
 
   sq.style.width = "36px";
   sq.style.height = "36px";
   sq.style.backgroundColor = isLight ? "#c2b17d" : "#7c3333";
+  if (isSelected) sq.style.backgroundColor = "#7cb342";
   sq.style.display = "inline-flex";
   sq.style.justifyContent = "center";
   sq.style.alignItems = "center";
   sq.style.fontSize = "22px";
+  sq.style.cursor = "pointer";
+  sq.style.boxSizing = "border-box";
 
   // Map piece codes to symbols
   const symbolMap = {
@@ -196,19 +243,39 @@ function createSquare(row, col, piece) {
     sq.textContent = symbolMap[piece];
   }
 
+  sq.addEventListener("click", () => handleClick(row, col));
+
   return sq;
 }
 
+function drawBoard() {
+  const container = document.getElementById("preview");
+  container.innerHTML = "";
+  container.style.width = "288px";
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      container.appendChild(createSquare(row, col, game.board[row][col]));
+    }
+  }
+  console.log("White to move - click a white piece");
+}
 const container = document.createElement("div");
+container.id = "preview";
 container.style.width = "288px";
 document.body.appendChild(container);
 
-for (let row = 0; row < 8; row++) {
-  for (let col = 0; col < 8; col++) {
-    const piece = board[row][col];
-    const sq = createSquare(row, col, piece);
-    container.appendChild(sq);
-  }
-}
+drawBoard();
 
 console.log("Our board now has pieces on it!");
+
+const player1 = {
+  name: "Katlego",
+  color: "white",
+  greet() {
+    console.log("Hello, I am " + this.name + " and I play " + this.color);
+  }
+};
+
+player1.greet();
+
+
